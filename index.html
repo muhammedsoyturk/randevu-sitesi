@@ -2,83 +2,65 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Randevu Planlayalım 💖</title>
 
 <style>
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-    color: #4a0c2c;
+    background: linear-gradient(135deg, #ffb6c1, #ffc0cb);
+    color: #4a1c2f;
     text-align: center;
-    padding: 30px;
+    padding: 20px;
     overflow-x: hidden;
 }
 
-/* 💗 ARKA PLAN KALPLER */
-.bg-heart {
-    position: fixed;
-    font-size: 20px;
-    opacity: 0.25;
-    animation: floatBg 12s linear infinite;
-}
-
-@keyframes floatBg {
-    0% {
-        transform: translateY(100vh);
-    }
-    100% {
-        transform: translateY(-120vh);
-    }
-}
-
 h1 {
-    margin-bottom: 25px;
-    color: #7a1139;
+    margin-bottom: 20px;
+    font-size: 1.6rem;
 }
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-    max-width: 500px;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    max-width: 420px;
     margin: auto;
 }
 
 .card {
-    background: rgba(255, 255, 255, 0.85);
+    background: white;
     border-radius: 18px;
     overflow: hidden;
     cursor: pointer;
-    transition: 0.3s;
-    position: relative;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    transition: 0.25s;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
 }
 
-.card:hover {
-    transform: scale(1.05);
+.card:active {
+    transform: scale(0.96);
 }
 
 .card img {
     width: 100%;
-    height: 140px;
+    height: 120px;
     object-fit: cover;
 }
 
 .card p {
     margin: 10px;
-    font-size: 16px;
+    font-size: 0.95rem;
     font-weight: bold;
 }
 
-/* 💖 TIKLAMA KALP ANİMASYONU */
+/* 💖 KALP ANİMASYONU */
 .heart {
     position: fixed;
     bottom: 0;
-    font-size: 26px;
+    font-size: 22px;
     animation: floatUp 1.2s ease-out forwards;
-    color: #ff2f6d;
-    z-index: 999;
+    color: #ff4d6d;
 }
 
 @keyframes floatUp {
@@ -94,11 +76,20 @@ h1 {
 
 /* 📸 KAPANIŞ FOTO */
 .final-photo {
-    width: 100%;
-    max-width: 300px;
+    width: 90%;
+    max-width: 260px;
     border-radius: 18px;
-    margin: 20px auto;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    margin: 15px auto;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
+@media (min-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+    .card img {
+        height: 150px;
+    }
 }
 </style>
 </head>
@@ -109,17 +100,6 @@ h1 {
 <div class="grid" id="cards"></div>
 
 <script>
-/* 💗 ARKA PLAN KALP OLUŞTURUCU */
-for (let i = 0; i < 18; i++) {
-    const bgHeart = document.createElement("div");
-    bgHeart.className = "bg-heart";
-    bgHeart.innerText = "💗";
-    bgHeart.style.left = Math.random() * 100 + "vw";
-    bgHeart.style.animationDuration = (8 + Math.random() * 8) + "s";
-    bgHeart.style.fontSize = (14 + Math.random() * 20) + "px";
-    document.body.appendChild(bgHeart);
-}
-
 const steps = [
     {
         title: "Ne yiyelim? 🍽️",
@@ -155,7 +135,6 @@ function createHeart() {
     heart.innerText = "💖";
     heart.style.left = Math.random() * 100 + "vw";
     document.body.appendChild(heart);
-
     setTimeout(() => heart.remove(), 1200);
 }
 
@@ -175,8 +154,7 @@ function loadStep() {
             result[steps[step].key] = opt.text;
             step++;
             setTimeout(() => {
-                if (step < steps.length) loadStep();
-                else showResult();
+                step < steps.length ? loadStep() : showResult();
             }, 300);
         };
         cards.appendChild(card);

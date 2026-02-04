@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Randevu Planlayalım 💖</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0f0f0f;
+    color: white;
+    text-align: center;
+    padding: 30px;
+    overflow-x: hidden;
+}
+
+h1 {
+    margin-bottom: 25px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    max-width: 500px;
+    margin: auto;
+}
+
+.card {
+    background: #1b1b1b;
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: 0.3s;
+    position: relative;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+}
+
+.card p {
+    margin: 10px;
+    font-size: 16px;
+}
+
+/* 💖 KALP ANİMASYONU */
+.heart {
+    position: fixed;
+    bottom: 0;
+    font-size: 24px;
+    animation: floatUp 1.2s ease-out forwards;
+    color: #ff4d6d;
+}
+
+@keyframes floatUp {
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-150px) scale(1.6);
+    }
+}
+
+/* 📸 KAPANIŞ FOTO */
+.final-photo {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 16px;
+    margin: 20px auto;
+}
+</style>
+</head>
+
+<body>
+
+<h1 id="title"></h1>
+<div class="grid" id="cards"></div>
+
+<script>
+const steps = [
+    {
+        title: "Ne yiyelim? 🍽️",
+        key: "Yemek",
+        options: [
+            { text: "Ali Kuzina", img: "images/alikuzina.jpg" },
+            { text: "Köfteci Yusuf", img: "images/köfteci yusuf.webp" },
+            { text: "Kahvaltı", img: "images/üni2.webp" },
+            { text: "Kruvasan", img: "images/kruvasan kafe.jpg" }
+        ]
+    },
+    {
+        title: "Nereye gidelim? 📍",
+        key: "Konum",
+        options: [
+            { text: "Alsancak Kordon", img: "images/alsancak.jpg" },
+            { text: "Ege Üni Banklar", img: "images/ege_peyzaj_1.jpg" },
+            { text: "Bostanlı Sahil", img: "images/bostanli-3.jpg" },
+            { text: "Derin Cafe Sabahlama", img: "images/derincafe.jpg" }
+        ]
+    }
+];
+
+let step = 0;
+let result = {};
+
+const title = document.getElementById("title");
+const cards = document.getElementById("cards");
+
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerText = "💖";
+    heart.style.left = Math.random() * 100 + "vw";
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+        heart.remove();
+    }, 1200);
+}
+
+function loadStep() {
+    cards.innerHTML = "";
+    title.innerText = steps[step].title;
+
+    steps[step].options.forEach(opt => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+            <img src="${opt.img}">
+            <p>${opt.text}</p>
+        `;
+        card.onclick = () => {
+            createHeart();
+            result[steps[step].key] = opt.text;
+            step++;
+            setTimeout(() => {
+                if (step < steps.length) loadStep();
+                else showResult();
+            }, 300);
+        };
+        cards.appendChild(card);
+    });
+}
+
+function showResult() {
+    title.innerText = "Randevumuz hazır 😌💖";
+    cards.innerHTML = `
+        <img src="images/biz.jpg" class="final-photo">
+        <p>🍽️ ${result.Yemek}</p>
+        <p>📍 ${result.Konum}</p>
+        <p>📅 14 Şubat</p>
+        <p>⏰ 19.00</p>
+        <h2>Seni bekliyorum 💋</h2>
+    `;
+}
+
+loadStep();
+</script>
+
+</body>
+</html>
